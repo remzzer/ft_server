@@ -9,6 +9,7 @@ mkdir -p /var/www/localhost
 
 #[SETTING NGINX SERVER]
 mv /tmp/nginx.conf /etc/nginx/sites-available/
+mv /tmp/test.html /var/www/localhost/
 rm /etc/nginx/sites-available/default
 rm /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
@@ -18,6 +19,15 @@ apt install -y openssl
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/localhost.key -out /etc/ssl/certs/localhost.crt -subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=localhost"
 
 #[INSTALL MARIADB]
+apt install -y mariadb-server
+service mysql start
+#Connect as Root user w/ no pwd & create database
+echo "CREATE DATABASE wordpress" | mysql -u root
+echo "GRANT ALL PRIVILEGES ON newdb.* TO 'root@localhost';" | mysql -u root
+echo "FLUSH PRIVILEGES;" | mysql -u root
+
+#[INSTALL WORDPRESS]
+
 
 #[SETTING PH]
 touch /var/www/localhost/info.php
