@@ -34,14 +34,25 @@ service mysql start
 #Connect as Root user w/ no pwd & create database
 echo "CREATE DATABASE wordpress" | mysql -u root
 echo "GRANT ALL PRIVILEGES ON wordpress.* TO 'root@localhost';" | mysql -u root
+echo "update mysql.user set plugin='mysql_native_password' where user='root';" | mysql -u root
 echo "FLUSH PRIVILEGES;" | mysql -u root
 
 #[INSTALL WORDPRESS]
 apt install -y wget
 cd tmp/
 wget -c https://wordpress.org/latest.tar.gz
-tar xzvf latest.tar.gz && rm latest.tar.gz
-mv wordpress/ /var/www/localhost/
+tar -xzvf latest.tar.gz && rm latest.tar.gz
+mv wordpress/ /var/www/localhost
+mv /tmp/wp-config.php /var/www/localhost/wordpress
+
+#[INSTALL PHPMYADMIN]
+mkdir /var/www/localhost/phpmyadmin
+apt install -y php-json php-mbstring
+wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.tar.gz
+tar -xvzf phpMyAdmin-4.9.0.1-all-languages.tar.gz --strip-components 1 -C /var/www/localhost/phpmyadmin
+
+#[SETTING PHPMYADMIN]
+mv /tmp/config.inc.php /var/www/localhost/phpmyadmin/
 
 #[SETTING USER ACCESS RIGHT]
 chown -R www-data:www-data /var/www/* 
