@@ -18,7 +18,7 @@ ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
 apt install -y openssl
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/localhost.key -out /etc/ssl/certs/localhost.crt -subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=localhost"
 
-#[SETTING PH]
+#[TESTING PHP]
 touch /var/www/localhost/info.php
 echo "<?php
   phpinfo();
@@ -57,5 +57,11 @@ mv /tmp/config.inc.php /var/www/localhost/phpmyadmin/
 #[SETTING USER ACCESS RIGHT]
 chown -R www-data:www-data /var/www/* 
 chmod -R 755 /var/www/* 
+
+#[SET AUTOINDEX]
+if [ $AUTOINDEX = off ]
+then 
+	sed -i 's/autoindex on/autoindex off/' /etc/nginx/sites-available/
+fi	
 
 service nginx start
