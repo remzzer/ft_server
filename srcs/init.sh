@@ -59,9 +59,9 @@ chown -R www-data:www-data /var/www/*
 chmod -R 755 /var/www/* 
 
 #[SET AUTOINDEX]
-if [ $AUTOINDEX = off ]
+if [ $VAL = off ]
 then 
-	sed -i 's/autoindex on/autoindex off/' /etc/nginx/sites-available/
+	sed -i 's/autoindex on/autoindex off/' /etc/nginx/sites-available/nginx.conf
 fi	
 
 service nginx start

@@ -8,8 +8,11 @@ COPY ./srcs/nginx.conf ./tmp/
 COPY ./srcs/wp-config.php ./tmp/
 COPY ./srcs/config.inc.php ./tmp/
 
+#Set autoindexi default value
+ARG AUTOINDEX=on
+
 #Set autoindex
-ENV AUTOINDEX on
+ENV VAL=$AUTOINDEX
 
 #Launch Script
 CMD bash init.sh & bash 
